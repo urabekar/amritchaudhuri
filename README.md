@@ -21,6 +21,8 @@ images/                   Site images (the 4 used: amrit-headshot,
                           amrit-speaking, lab-space, amrit-about)
 spoke-schema-snippets.md  JSON-LD to paste into APC/Kaliper/Exycute sites
 wikidata-starter-kit.md   Wikidata reference notes
+_config.yml               Keeps README.md and the two .md notes above
+                          out of the published site
 ```
 
 No build step. The files in this repo are the live site.
