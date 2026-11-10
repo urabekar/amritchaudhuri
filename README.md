@@ -15,6 +15,7 @@ sitemap.xml               Sitemap for Google Search Console
 robots.txt                Crawl directives
 rss.xml                   RSS 2.0 feed of essays
 CNAME                     www.amritchaudhuri.com (GitHub Pages custom domain)
+insights/index.html       Essays index: a plain-HTML list of every essay
 insights/                 Standalone essay pages (one per essay; real,
                           indexable, with their own Article schema)
 images/                   Site images (the 4 used: amrit-headshot,
@@ -56,8 +57,12 @@ No build step. The files in this repo are the live site.
    description, date, body, references, and the JSON-LD `Article` block.
 2. Add a matching post object to the `posts` array in `index.html`
    (same `id`, `iso`, `t`, `tags`, `sub`, `body`, `refs`).
-3. Append the new essay URL to `sitemap.xml`.
-4. Regenerate `rss.xml` (Node script below).
+3. Add a card for the essay, newest first, to `insights/index.html` and to
+   the static list inside `<div class="feed" id="feed">` in `index.html`.
+   These plain links let search engines and AI crawlers find the essay
+   without running JavaScript.
+4. Append the new essay URL to `sitemap.xml`.
+5. Regenerate `rss.xml` (Node script below).
 
 ### Regenerate rss.xml
 
