@@ -1,0 +1,5 @@
+# Keeps working notes in the repo but out of the published site.
+exclude:
+  - README.md
+  - spoke-schema-snippets.md
+  - wikidata-starter-kit.md
