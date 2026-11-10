@@ -3,3 +3,4 @@ exclude:
   - README.md
   - spoke-schema-snippets.md
   - wikidata-starter-kit.md
+  - feed-data.js
