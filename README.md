@@ -61,8 +61,19 @@ No build step. The files in this repo are the live site.
    the static list inside `<div class="feed" id="feed">` in `index.html`.
    These plain links let search engines and AI crawlers find the essay
    without running JavaScript.
-4. Append the new essay URL to `sitemap.xml`.
-5. Regenerate `rss.xml` (Node script below).
+4. Add a "Newer essay" link to the essay that was the newest until now, and
+   an "Older essay" link on the new page (the `essay-nav` block near the
+   foot of each essay page).
+5. Append the new essay URL to `sitemap.xml`.
+6. Regenerate `rss.xml` (Node script below).
+
+## Adding a press, talk or interview entry
+
+1. Add a post object to the `posts` array in `index.html`, in date order.
+2. Add a matching card at the same position in the static list inside
+   `<div class="feed" id="feed">` in `index.html`. The static list is what
+   search engines and AI crawlers read. The script rebuilds the same list
+   for visitors and runs the filters.
 
 ### Regenerate rss.xml
 

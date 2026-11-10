@@ -30,9 +30,22 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="nav"><div class="nav-inner">
 <a href="../" class="brand">Amrit Chaudhuri</a>
-<nav class="navlinks">
+<button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navlinks"><span></span><span></span><span></span></button>
+<nav class="navlinks" id="navlinks">
 <a href="../#now">Now</a><a href="../#career">Career</a><a href="../#about">About</a><a href="../#insights">Insights &amp; Press</a><a href="../#contact">Contact</a>
 </nav></div></header>
+<script>
+(function(){
+  var t=document.getElementById('menuToggle'), n=document.getElementById('navlinks');
+  if(!t||!n)return;
+  function close(){n.classList.remove('open');t.setAttribute('aria-expanded','false');}
+  t.addEventListener('click',function(){
+    var open=n.classList.toggle('open');
+    t.setAttribute('aria-expanded',open?'true':'false');
+  });
+  n.addEventListener('click',function(e){if(e.target.tagName==='A')close();});
+})();
+</script>
 <main id="main">
 <article class="prose" style="padding:80px 24px 60px;max-width:760px;margin:0 auto">
 <p style="font-size:13px"><a href="./" style="color:var(--accent-2);text-decoration:none">&larr; All writing</a></p>
@@ -45,7 +58,8 @@
 <p>These steps prefigured SmartLabs' proprietary Lab Operating System, proving that laboratory performance could be engineered not only through architecture but also through software.</p></div>
 <div class="refs" style="margin-top:30px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px"><h4 style="font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:10px">References &amp; Coverage</h4><div style="margin:6px 0">· <a href="https://www.prweb.com/releases/mass_innovation_labs_announces_adoption_of_rspace_as_digital_data_management_service_for_member_companies/prweb14245218.htm" target="_blank" rel="noopener" style="color:var(--accent-2)">PRWeb, Mass Innovation Labs Adopts RSpace</a></div><div style="margin:6px 0">· <a href="https://www.researchspace.com/blog/mass-innovation-labs-introduces-rspace-to-member-companies" target="_blank" rel="noopener" style="color:var(--accent-2)">ResearchSpace, MIL Introduces RSpace to Member Companies</a></div><div style="margin:6px 0">· <a href="https://lab-ally.com/mil-adopts-rspace-eln/" target="_blank" rel="noopener" style="color:var(--accent-2)">Lab-Ally, MIL Adopts RSpace ELN</a></div></div>
 <div style="margin-top:26px;display:flex;gap:8px;flex-wrap:wrap"><span class="chip">Software</span><span class="chip">Lab OS</span><span class="chip">Data</span></div>
-<p style="margin-top:34px"><a href="./" style="color:var(--accent-2);text-decoration:none">&larr; Back to all writing</a></p>
+<nav class="essay-nav" aria-label="More essays"><a class="prev" href="sleepless-ceo.html"><span>&larr; Older essay</span>The Sleepless CEO: Making the Case for a Good Night's Rest</a><a class="next" href="expanding-network.html"><span>Newer essay &rarr;</span>Expanding the Physical Network, Boston, Cambridge &amp; Seaport</a></nav>
+<p style="margin-top:26px"><a href="./" style="color:var(--accent-2);text-decoration:none">&larr; Back to all writing</a></p>
 </article>
 </main>
 <footer><strong>Amrit Chaudhuri</strong>, Founder, Executive, and Infrastructure Architect in Life Sciences and Healthcare · <a href="https://www.apc.science" target="_blank" rel="noopener">APC Science</a> · <a href="https://www.kaliperco.com" target="_blank" rel="noopener">Kaliper</a> · <a href="https://www.linkedin.com/in/amrit-chaudhuri/" target="_blank" rel="noopener">LinkedIn</a><br><span style="font-size:12px;color:#6f8092">© 2026 Amrit Chaudhuri</span></footer>
