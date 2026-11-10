@@ -2,14 +2,23 @@
 
 Personal website for Amrit Chaudhuri. Hand-coded static HTML/CSS/JS with
 JSON-LD Person/Organization/Article schema, an OG/Twitter share image,
-a chronological Insights & Press feed (essays + press), and an RSS feed.
+separate Career, About, Press, Speaking and Essays pages, and an RSS feed.
 
 ## Structure
 
 ```
-index.html                Hub: hero, stats, profile, what I build, now,
-                          statement, career, about, recognition,
-                          insights & press, contact
+index.html                Hub: hero, stats, selected proof, what I build,
+                          now, short career and about intros,
+                          recognition, the three latest essays, talks
+                          and press articles, contact
+career/index.html         The full career story (Parts I to III)
+about/index.html          The personal section
+press/index.html          Every press article and announcement, by year
+speaking/index.html       Every talk and interview
+feed-data.js              The record of every essay, talk, interview and
+                          press entry. Not published. The pages are
+                          plain HTML written from it, and the RSS
+                          script reads it
 styles.css                Shared stylesheet
 sitemap.xml               Sitemap for Google Search Console
 robots.txt                Crawl directives
@@ -22,8 +31,8 @@ images/                   Site images (the 4 used: amrit-headshot,
                           amrit-speaking, lab-space, amrit-about)
 spoke-schema-snippets.md  JSON-LD to paste into APC/Kaliper/Exycute sites
 wikidata-starter-kit.md   Wikidata reference notes
-_config.yml               Keeps README.md and the two .md notes above
-                          out of the published site
+_config.yml               Keeps README.md, the two .md notes above and
+                          feed-data.js out of the published site
 ```
 
 No build step. The files in this repo are the live site.
@@ -55,12 +64,12 @@ No build step. The files in this repo are the live site.
 1. Create `insights/<slug>.html` by copying an existing essay page (e.g.
    `insights/keratin-repair-patent.html`) and editing the title,
    description, date, body, references, and the JSON-LD `Article` block.
-2. Add a matching post object to the `posts` array in `index.html`
-   (same `id`, `iso`, `t`, `tags`, `sub`, `body`, `refs`).
-3. Add a card for the essay, newest first, to `insights/index.html` and to
-   the static list inside `<div class="feed" id="feed">` in `index.html`.
-   These plain links let search engines and AI crawlers find the essay
-   without running JavaScript.
+2. Add a matching post object to the `posts` array in `feed-data.js`
+   (same `id`, `iso`, `d`, `t`, `tags`, `sub`). The RSS script reads it.
+3. Add a card for the essay, newest first, to `insights/index.html`, and to
+   the "Latest essays" group in `index.html`. That group shows the newest
+   three, so remove the oldest of the three and update the count in the
+   "All essays" link under it.
 4. Add a "Newer essay" link to the essay that was the newest until now, and
    an "Older essay" link on the new page (the `essay-nav` block near the
    foot of each essay page).
@@ -69,18 +78,20 @@ No build step. The files in this repo are the live site.
 
 ## Adding a press, talk or interview entry
 
-1. Add a post object to the `posts` array in `index.html`, in date order.
-2. Add a matching card at the same position in the static list inside
-   `<div class="feed" id="feed">` in `index.html`. The static list is what
-   search engines and AI crawlers read. The script rebuilds the same list
-   for visitors and runs the filters.
+1. Add a post object to the `posts` array in `feed-data.js`, in date order.
+2. Add a matching card to `press/index.html` (under its year, newest
+   first) or to `speaking/index.html` (under Talks or Interviews). Update
+   the count beside that heading and in the line under the page title.
+3. If the entry is among the newest three of its kind, add the same card
+   to the matching group in `index.html`, remove the oldest of the three,
+   and update the count in the "All ..." link under that group.
 
 ### Regenerate rss.xml
 
 ```bash
 node -e '
 const fs=require("fs");
-let s=fs.readFileSync("index.html","utf8");
+let s=fs.readFileSync("feed-data.js","utf8");
 let i=s.indexOf("const posts = [");let j=s.indexOf("\n];",i);
 let posts=eval(s.slice(i+"const posts = ".length,j+2));
 let essays=posts.filter(p=>p.type==="essay").sort((a,b)=>b.iso<a.iso?-1:1);
@@ -88,7 +99,7 @@ const SITE="https://www.amritchaudhuri.com";
 const esc=x=>(x||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 const rfc=iso=>new Date(iso+"T09:00:00Z").toUTCString();
 const items=essays.map(p=>{const u=SITE+"/insights/"+p.id+".html";return `  <item>\n    <title>${esc(p.t)}</title>\n    <link>${u}</link>\n    <guid isPermaLink="true">${u}</guid>\n    <pubDate>${rfc(p.iso)}</pubDate>\n    <description>${esc(p.sub||"")}</description>\n  </item>`;}).join("\n");
-const rss=`<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n<channel>\n  <title>Amrit Chaudhuri</title>\n  <link>${SITE}/#insights</link>\n  <atom:link href="${SITE}/rss.xml" rel="self" type="application/rss+xml"/>\n  <description>Essays by Amrit Chaudhuri.</description>\n  <language>en-us</language>\n  <lastBuildDate>${rfc(essays[0].iso)}</lastBuildDate>\n${items}\n</channel>\n</rss>\n`;
+const rss=`<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n<channel>\n  <title>Amrit Chaudhuri Insights</title>\n  <link>${SITE}/#insights</link>\n  <atom:link href="${SITE}/rss.xml" rel="self" type="application/rss+xml"/>\n  <description>Essays by Amrit Chaudhuri.</description>\n  <language>en-us</language>\n  <lastBuildDate>${rfc(essays[0].iso)}</lastBuildDate>\n${items}\n</channel>\n</rss>\n`;
 fs.writeFileSync("rss.xml",rss); console.log("rss.xml updated, "+essays.length+" essays");'
 ```
 
